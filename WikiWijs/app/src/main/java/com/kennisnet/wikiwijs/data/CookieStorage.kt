@@ -10,6 +10,7 @@ import java.io.File
 import java.nio.charset.Charset
 
 const val COOKIES_FILE = "EntreeCookies"
+const val COOKIE_DOMAIN = "https://entree-account.kennisnet.nl/saml/module.php/entreeaccount/loginuserpass.php"
 const val SESSION_COOKIE_NAME = "SimpleSAMLAuthToken"
 
 interface LoginDelegate{
@@ -89,7 +90,7 @@ class CookieStorage(private val context: Context){
         val cookieCount = cookies.size
         var setCounter = 0
         for (cookie in cookies){
-            cookieManager.setCookie(AUTH_ENDPOINT, "${cookie.name}=${cookie.value}") {
+            cookieManager.setCookie(COOKIE_DOMAIN, "${cookie.name}=${cookie.value}") {
                 setCounter++
                 if(setCounter == cookieCount){
                     loginDelegate?.cookiesSet()
