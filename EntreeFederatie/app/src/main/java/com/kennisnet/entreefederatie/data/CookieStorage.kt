@@ -1,8 +1,8 @@
-package com.example.entreefederatie.data
+package com.kennisnet.entreefederatie.data
 
 import android.content.Context
 import android.webkit.CookieManager
-import com.example.entreefederatie.models.Cookie
+import com.kennisnet.entreefederatie.models.Cookie
 import java.io.File
 import java.nio.charset.Charset
 
@@ -14,9 +14,22 @@ interface LoginDelegate{
     fun propertiesPageLoaded()
 }
 
+/**
+ * A class that manages the cookies on the storage and loads them into the CookieManager
+ */
 class CookieStorage(private val context: Context){
     var loginDelegate: LoginDelegate? = null
 
+    /**
+     * This method will save the cookies to a file, alongside with the URL where the cookies are meant for.
+     *
+     * The cookies are stored in the format: c1=v1;c2=v2...&url
+     *
+     * If the cookies contain a valid session, the loginDelegate set on this class will be called.
+     *
+     * @param cookies A String retrieved from a CookieManager, i.e. cookieName=cookievalue;cookiename2=cookievalue2
+     * @param url the base URl where the cookies are set for
+     */
     fun saveCookies(cookies: String, url:String){
         val file = File(context.filesDir, COOKIES_FILE)
         val cookiesString = "$cookies&$url"
@@ -24,6 +37,11 @@ class CookieStorage(private val context: Context){
         validateCookies(parseCookies(cookiesString))
     }
 
+    /**
+     * Load the cookies from storage into the CookieManager, making the cookies available in the WebView.
+     *
+     * Use this function to restore a locally saved session, or to load a shared session to enable SSO.
+     */
     fun loadCookies(){
         val file  = File(context.filesDir, COOKIES_FILE)
         if (file.exists()){
@@ -33,12 +51,21 @@ class CookieStorage(private val context: Context){
 
     }
 
+    /**
+     * Remove the cookies file and all the cookies from the CookieManager.
+     */
     fun removeSession(){
         CookieManager.getInstance().removeAllCookies(null)
         val file = File(context.filesDir, COOKIES_FILE)
         file.delete()
     }
 
+    /**
+     * Parses a string into a list of `Cookie` objects.
+     *
+     * @param cookiesString A string in the format c1=v1;c2=v2;...&url
+     * @return A list of cookies
+     */
     private fun parseCookies(cookiesString: String): List<Cookie>{
         val data = cookiesString.split("&")
         val url = data[1]

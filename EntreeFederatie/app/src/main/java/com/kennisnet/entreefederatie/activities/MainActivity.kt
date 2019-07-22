@@ -1,13 +1,13 @@
-package com.example.entreefederatie.activities
+package com.kennisnet.entreefederatie.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.beust.klaxon.Klaxon
-import com.example.entreefederatie.R
-import com.example.entreefederatie.data.CookieStorage
-import com.example.entreefederatie.models.ReferentieProperties
+import com.kennisnet.entreefederatie.R
+import com.kennisnet.entreefederatie.data.CookieStorage
+import com.kennisnet.entreefederatie.models.ReferentieProperties
 
 class MainActivity : AppCompatActivity() {
     var properties: ReferentieProperties? = null
@@ -37,6 +37,10 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Parse the JSON string to a ReferentieProperties object to be used in this Activity for displaying the values.
+     * Thus, proving that the login is completed and that the session can be used.
+     */
     private fun parseProperties(){
         val propertiesString = intent.getStringExtra("properties")
         properties = Klaxon().parse<ReferentieProperties>(propertiesString)

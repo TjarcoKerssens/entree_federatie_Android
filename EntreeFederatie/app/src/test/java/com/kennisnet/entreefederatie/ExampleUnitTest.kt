@@ -1,4 +1,4 @@
-package com.example.entreefederatie
+package com.kennisnet.entreefederatie
 
 import org.junit.Test
 

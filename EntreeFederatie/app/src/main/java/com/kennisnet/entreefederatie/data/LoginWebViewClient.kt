@@ -1,13 +1,15 @@
-package com.example.entreefederatie.data
+package com.kennisnet.entreefederatie.data
 
 import android.content.Context
 import android.webkit.CookieManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 
-const val JS_PROPERTIES = "ReadReferentieProperties.js"
 
-class LoginWebViewClient(val context: Context, val delegate: LoginDelegate): WebViewClient() {
+/**
+ * A class to respond to events on the LoginWebView. It makes sure that the cookies are loaded if they exist.
+ */
+class LoginWebViewClient(context: Context, private val delegate: LoginDelegate): WebViewClient() {
 
     private val cookieManager = CookieStorage(context)
 

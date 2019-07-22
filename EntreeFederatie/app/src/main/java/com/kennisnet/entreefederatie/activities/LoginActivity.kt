@@ -1,4 +1,4 @@
-package com.example.entreefederatie.activities
+package com.kennisnet.entreefederatie.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import com.example.entreefederatie.R
-import com.example.entreefederatie.data.JS_PROPERTIES
-import com.example.entreefederatie.data.LoginDelegate
-import com.example.entreefederatie.data.LoginWebViewClient
+import com.kennisnet.entreefederatie.R
+import com.kennisnet.entreefederatie.data.LoginDelegate
+import com.kennisnet.entreefederatie.data.LoginWebViewClient
 import java.io.BufferedReader
 
 
 const val AUTH_ENDPOINT = "https://referentie.entree.kennisnet.nl/saml/module.php/core/authenticate.php?as=RefSPSAML"
+const val JS_PROPERTIES = "ReadReferentieProperties.js"
 
 class LoginActivity : AppCompatActivity(), LoginDelegate {
     private lateinit var loginWebView: WebView
@@ -48,12 +48,20 @@ class LoginActivity : AppCompatActivity(), LoginDelegate {
         }
     }
 
+    /**
+     * If the user is authenticated, we can parse the properties from the Referentie Application
+     */
     override fun propertiesPageLoaded() {
         if (authenticated){
             parseProperties()
         }
     }
 
+    /**
+     * Runs a JavaScript file on the WebView to parse the properties table
+     *
+     * The resulting properties will be returned as a JSON string. These properties are passed to the MainScreen
+     */
     private fun parseProperties(){
         val javascript = "javascript:${readPropertiesJavaScript().trim()}"
         loginWebView.loadUrl(javascript)
